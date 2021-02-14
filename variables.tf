@@ -15,8 +15,14 @@ variable egress_domain {}
 variable inspected_domains {}
 variable tgw_firenet_gw_size {}
 
+variable vpc_data_region_1 {}
 
 variable tgw_firewall_names {}
 variable tgw_firewall_size {}
 variable aws_pan_subscription {}
 variable aws_byol {}
+
+variable aws_transit_name_1 {}
+variable aws_transit_cidr_1 {}
+variable aws_transit_gw_size {}
+variable aws_spoke_gw_size {}

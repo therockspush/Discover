@@ -5,7 +5,7 @@ resource "aviatrix_aws_tgw" "aws_tgw" {
   manage_vpc_attachment             = false
   manage_transit_gateway_attachment = false
   region                            = var.region
-  tgw_name                          = "TGW-${title(split("-", var.region)[1])}${split("-", var.region)[2]}"
+  tgw_name                          = "OOB-TGW-${title(split("-", var.region)[1])}${split("-", var.region)[2]}"
 
   security_domains {
     security_domain_name = "Aviatrix_Edge_Domain"

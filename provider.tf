@@ -1,10 +1,10 @@
 provider "aviatrix" {
-  username      = var.username
-  password      = var.password
-  controller_ip = var.controller_ip
+  username                = var.username
+  password                = var.password
+  controller_ip           = var.controller_ip
   skip_version_validation = true
 
-  version = "~> 2.1"
+  version = "~> 2.18"
 }
 
 provider "aws" {
@@ -18,14 +18,6 @@ provider "aws" {
   profile = var.aws_profile
   alias   = "region_2"
 }
-
-/*
-provider "aws" {
-  region  = var.aws_region_3
-  profile = var.aws_profile
-  alias   = "region_3"
-}
-*/
 
 provider "local" {
   version = "~> 1.4"
