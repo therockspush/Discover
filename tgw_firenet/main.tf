@@ -20,8 +20,8 @@ resource "aviatrix_transit_gateway" "firenet_gateway" {
   ha_subnet                = var.avtx_gw_ha ? aviatrix_vpc.security_vpc.subnets[2].cidr : null
   ha_gw_size               = var.avtx_gw_ha ? var.avtx_gw_size : null
   enable_active_mesh       = true
-  enable_firenet           = true
-  enable_hybrid_connection = true
+  enable_transit_firenet   = true
+  enable_hybrid_connection = false
 }
 
 /*
@@ -39,7 +39,7 @@ resource "aviatrix_aws_tgw_vpc_attachment" "tgw_FireNet_attachment" {
 
   tgw_name             = var.tgw_name
   region               = var.region
-  security_domain_name = var.tgw_firenet_domain
+  security_domain_name = "Shared_Service_Domain"
   vpc_account_name     = var.account_name
   vpc_id               = aviatrix_vpc.security_vpc.vpc_id
 

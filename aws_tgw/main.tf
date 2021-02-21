@@ -66,3 +66,23 @@ resource "aviatrix_aws_tgw" "aws_tgw" {
     }
   }
 }
+
+resource "aviatrix_aws_tgw_vpc_attachment" "default_route_vpc_attachment" {
+
+  tgw_name             = aviatrix_aws_tgw.aws_tgw.tgw_name
+  region               = var.region
+  security_domain_name = "Shared_Service_Domain"
+  vpc_account_name     = var.account_name
+  vpc_id               = data.aws_vpc.NATGWVPC.id
+  customized_route_advertisement = "0.0.0.0/0"
+
+  depends_on = [aviatrix_aws_tgw.aws_tgw]
+}
+
+data "aws_vpc" "NATGWVPC" {
+
+  filter {
+    name = "tag:Name"
+    values = [var.default_route_vpc]
+  }
+}

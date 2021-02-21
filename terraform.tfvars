@@ -1,9 +1,11 @@
-aws_profile            = "default"
+aws_profile            = ""
 controller_ip          = ""
 shared_services_vpc_id = ""
-aws_account_name       = "aws_mgic"
+aws_account_name       = ""
 username               = "admin"
 password               = ""
+
+default_route_vpc = "DefaultNATVPCNVa"
 
 aws_region_1 = "us-east-1"
 aws_region_2 = "us-west-2"
@@ -19,7 +21,7 @@ tgw_firenet_gw_size = "c5n.xlarge"
 # Firewall info
 # List of FW names in zone A, firewalls in zone B will be created if avtx_gateway_ha set to true. They will have -ha extension
 tgw_firewall_names   = ["tgw-fw1"]
-tgw_firewall_size    = "c5n.xlarge"
+avtx_firewall_size    = "c5n.xlarge"
 aws_byol             = false
 aws_pan_subscription = "Palo Alto Networks VM-Series Next-Generation Firewall Bundle 1 [VM-300]" # Not needed if byol = true
 

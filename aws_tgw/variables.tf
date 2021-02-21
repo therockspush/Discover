@@ -8,6 +8,8 @@ variable "tgw_asn" {
   default = 64512
 }
 
+variable "default_route_vpc" {}
+
 variable "firenet_domain" {}
 variable "egress_domain" {}
 

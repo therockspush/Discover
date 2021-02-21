@@ -10,6 +10,7 @@ resource "aviatrix_vpc" "aws_transit" {
   enable_private_oob_subnet = true
 }
 
+
 resource "aviatrix_aws_tgw_vpc_attachment" "transit_vpc_attachment" {
   tgw_name             = var.aws_transit_gw
   security_domain_name = "Shared_Service_Domain"
@@ -55,15 +56,15 @@ resource "aviatrix_transit_gateway" "transit_gateway_tvpc" {
   gw_name      = "atgw-aws-${var.region}"
   insane_mode  = var.hpe
   gw_size      = var.avtx_gw_size
-  ha_gw_size   = var.avtx_gw_ha ? var.avtx_gw_size : null
+  #ha_gw_size   = var.avtx_gw_ha ? var.avtx_gw_size : null
   subnet             = cidrsubnet(aviatrix_vpc.aws_transit.cidr, 10, 5)
-  ha_subnet          = cidrsubnet(aviatrix_vpc.aws_transit.cidr, 10, 10)
-  insane_mode_az     = var.hpe ? data.aws_subnet.gw_az.availability_zone : null
-  ha_insane_mode_az  = var.avtx_gw_ha ? (var.hpe ? data.aws_subnet.hagw_az.availability_zone : null) : null
+  #ha_subnet          = cidrsubnet(aviatrix_vpc.aws_transit.cidr, 10, 10)
+  #insane_mode_az     = var.hpe ? data.aws_subnet.gw_az.availability_zone : null
+  #ha_insane_mode_az  = var.avtx_gw_ha ? (var.hpe ? data.aws_subnet.hagw_az.availability_zone : null) : null
   enable_active_mesh = true
   connected_transit             = true
   enable_advertise_transit_cidr = false
-  enable_transit_firenet        = var.firenet
+  enable_transit_firenet        = true
   enable_private_oob            = true
   oob_availability_zone         = "us-east-1a"
   oob_management_subnet         = data.aws_subnet.selected_oob_subnet1.cidr_block
@@ -71,6 +72,15 @@ resource "aviatrix_transit_gateway" "transit_gateway_tvpc" {
   depends_on = [aviatrix_aws_tgw_vpc_attachment.transit_vpc_attachment]
 }
 
+resource "aviatrix_transit_firenet_policy" "test_transit_firenet_policy1" {
+  transit_firenet_gateway_name = aviatrix_transit_gateway.transit_gateway_tvpc.gw_name
+  inspected_resource_name      = "SPOKE:vpc2-east1-gw"
+}
+
+resource "aviatrix_transit_firenet_policy" "test_transit_firenet_policy2" {
+  transit_firenet_gateway_name = aviatrix_transit_gateway.transit_gateway_tvpc.gw_name
+  inspected_resource_name      = "SPOKE:vpc1-east1-gw"
+}
 
 
 data "aws_subnet" "gw_az" {
@@ -80,3 +90,4 @@ data "aws_subnet" "gw_az" {
 data "aws_subnet" "hagw_az" {
   id = aviatrix_vpc.aws_transit.subnets[2].subnet_id
 }
+
