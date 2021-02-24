@@ -72,15 +72,7 @@ resource "aviatrix_transit_gateway" "transit_gateway_tvpc" {
   depends_on = [aviatrix_aws_tgw_vpc_attachment.transit_vpc_attachment]
 }
 
-resource "aviatrix_transit_firenet_policy" "test_transit_firenet_policy1" {
-  transit_firenet_gateway_name = aviatrix_transit_gateway.transit_gateway_tvpc.gw_name
-  inspected_resource_name      = "SPOKE:vpc2-east1-gw"
-}
 
-resource "aviatrix_transit_firenet_policy" "test_transit_firenet_policy2" {
-  transit_firenet_gateway_name = aviatrix_transit_gateway.transit_gateway_tvpc.gw_name
-  inspected_resource_name      = "SPOKE:vpc1-east1-gw"
-}
 
 
 data "aws_subnet" "gw_az" {

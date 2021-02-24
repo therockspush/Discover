@@ -1,5 +1,5 @@
 
-/*
+
 resource "aviatrix_firewall_instance" "firewall_instance" {
   for_each = var.firewall_names
 
@@ -17,7 +17,7 @@ resource "aviatrix_firewall_instance" "firewall_instance" {
   username               = var.cloud == "azure" ? "avtx1234" : null
   password               = var.cloud == "azure" ? "" : null
 }
-*/
+
 /*
 resource "aviatrix_firewall_instance" "firewall_instance_ha" {
   for_each = var.firewall_names
@@ -44,7 +44,7 @@ resource "aviatrix_firenet" "firewall_net" {
   inspection_enabled = var.inspection_enabled
   egress_enabled     = var.egress_enabled  
 }
-/*
+
 resource "aviatrix_firewall_instance_association" "firewall_instance_association_1" {
   for_each = var.firewall_names
   vpc_id               = var.vpc_id
@@ -57,7 +57,7 @@ resource "aviatrix_firewall_instance_association" "firewall_instance_association
   management_interface = var.cloud == "aws" ? aviatrix_firewall_instance.firewall_instance[each.key].management_interface : null
   egress_interface     = aviatrix_firewall_instance.firewall_instance[each.key].egress_interface
 }
-*/
+
 /*
 resource "aviatrix_firewall_instance_association" "firewall_instance_association_2" {
   for_each = var.firewall_names

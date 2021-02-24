@@ -89,3 +89,10 @@ resource "aviatrix_spoke_gateway" "avtx_spoke_gw" {
 
 
 
+resource "aviatrix_transit_firenet_policy" "test_transit_firenet_policy1" {
+  transit_firenet_gateway_name = var.avx_transit_gw
+  inspected_resource_name      = "SPOKE:vpc1-east1-gw"
+
+  depends_on                   = [aviatrix_spoke_gateway.avtx_spoke_gw]
+  
+}
