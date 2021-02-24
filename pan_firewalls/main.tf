@@ -56,6 +56,8 @@ resource "aviatrix_firewall_instance_association" "firewall_instance_association
   lan_interface        = aviatrix_firewall_instance.firewall_instance[each.key].lan_interface
   management_interface = var.cloud == "aws" ? aviatrix_firewall_instance.firewall_instance[each.key].management_interface : null
   egress_interface     = aviatrix_firewall_instance.firewall_instance[each.key].egress_interface
+  
+  depends_on = [aviatrix_firenet.firewall_net]
 }
 
 /*
