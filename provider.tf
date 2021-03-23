@@ -4,7 +4,7 @@ provider "aviatrix" {
   controller_ip           = var.controller_ip
   skip_version_validation = true
 
-  version = "~> 2.18"
+  version = "= 2.18.1"
 }
 
 provider "aws" {
