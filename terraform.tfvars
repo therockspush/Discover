@@ -20,7 +20,7 @@ tgw_firenet_gw_size = "c5n.xlarge"
 
 # Firewall info
 # List of FW names in zone A, firewalls in zone B will be created if avtx_gateway_ha set to true. They will have -ha extension
-tgw_firewall_names   = ["tgw-fw1"]
+tgw_firewall_names   = ["tgw-fw1","tgw-fw2"]
 avtx_firewall_size    = "c5n.xlarge"
 aws_byol             = false
 aws_pan_subscription = "Palo Alto Networks VM-Series Next-Generation Firewall Bundle 1 [VM-300]" # Not needed if byol = true
@@ -29,16 +29,16 @@ aws_pan_subscription = "Palo Alto Networks VM-Series Next-Generation Firewall Bu
 vpc_data_region_1 = {
   vpc1 = {
     name = "VPC1-East1"
-    cidr = "10.4.0.0/16"
+    cidr = "10.4.0.0/24"
   }
   vpc2 = {
     name = "VPC2-East1"
-    cidr = "10.5.0.0/16"
+    cidr = "10.5.0.0/24"
   }
 }
 
 #Transit info
 aws_transit_name_1  = "AWS-Edge-East1"
-aws_transit_cidr_1  = "10.8.0.0/16"
+aws_transit_cidr_1  = "10.8.0.0/23"
 aws_transit_gw_size = "c5n.xlarge"
 aws_spoke_gw_size   = "t3.small"
