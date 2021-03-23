@@ -23,7 +23,7 @@ resource "aviatrix_aws_tgw_vpc_attachment" "spoke_vpc_attachment" {
   region               = var.region
   security_domain_name = "Shared_Service_Domain"
   vpc_id               = aviatrix_vpc.aws_vpc[each.key].vpc_id
-  subnets              = data.aws_subnet.spokeselected1[each.key].id
+  subnets              = "${data.aws_subnet.spokeselected1[each.key].id},${data.aws_subnet.spokeselected2[each.key].id}"
   route_tables         = data.aws_route_table.spokeprivateRT[each.key].id
 
   depends_on = [aviatrix_vpc.aws_vpc]
@@ -72,17 +72,19 @@ resource "aviatrix_spoke_gateway" "avtx_spoke_gw" {
   vpc_id            = aviatrix_vpc.aws_vpc[each.key].vpc_id
   vpc_reg           = var.region
   insane_mode       = var.hpe
-  #ha_gw_size        = var.avtx_gw_ha ? var.avtx_gw_size : null
+  ha_gw_size        = var.avtx_gw_ha ? var.avtx_gw_size : null
   gw_size           = var.avtx_gw_size
-  subnet            = cidrsubnet(aviatrix_vpc.aws_vpc[each.key].cidr, 10, 5)
-  #ha_subnet         = cidrsubnet(aviatrix_vpc.aws_vpc[each.key].cidr, 10, 10)
+  subnet            = cidrsubnet(aviatrix_vpc.aws_vpc[each.key].cidr, 2, 2)
+  ha_subnet         = cidrsubnet(aviatrix_vpc.aws_vpc[each.key].cidr, 2, 3)
   #insane_mode_az    = var.hpe ? data.aws_availability_zones.az_available.names[0] : null
   #ha_insane_mode_az = var.avtx_gw_ha ? (var.hpe ? data.aws_availability_zones.az_available.names[1] : null) : null
-  transit_gw         = var.avx_transit_gw
+  #transit_gw         = var.avx_transit_gw
   enable_active_mesh    = true
   enable_private_oob    = true
   oob_availability_zone = "us-east-1a"
+  ha_oob_availability_zone = "us-east-1b"
   oob_management_subnet = data.aws_subnet.spokeselected1[each.key].cidr_block
+  ha_oob_management_subnet = data.aws_subnet.spokeselected2[each.key].cidr_block
 
   depends_on = [aviatrix_aws_tgw_vpc_attachment.spoke_vpc_attachment]
 }
@@ -93,6 +95,15 @@ resource "aviatrix_transit_firenet_policy" "test_transit_firenet_policy1" {
   transit_firenet_gateway_name = var.avx_transit_gw
   inspected_resource_name      = "SPOKE:vpc1-east1-gw"
 
-  depends_on                   = [aviatrix_spoke_gateway.avtx_spoke_gw]
+  depends_on                   = [aviatrix_spoke_transit_attachment.spokeAttachment]
   
+}
+
+resource "aviatrix_spoke_transit_attachment" "spokeAttachment" {
+  for_each = var.vpc_data
+  
+  spoke_gw_name   = aviatrix_spoke_gateway.avtx_spoke_gw[each.key].gw_name
+  transit_gw_name = var.avx_transit_gw
+  
+  depends_on = [aviatrix_spoke_gateway.avtx_spoke_gw]
 }
