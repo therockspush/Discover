@@ -56,9 +56,9 @@ resource "aviatrix_transit_gateway" "transit_gateway_tvpc" {
   gw_name      = "atgw-aws-${var.region}"
   insane_mode  = var.hpe
   gw_size      = var.avtx_gw_size
-  #ha_gw_size   = var.avtx_gw_ha ? var.avtx_gw_size : null
-  subnet             = cidrsubnet(aviatrix_vpc.aws_transit.cidr, 10, 5)
-  #ha_subnet          = cidrsubnet(aviatrix_vpc.aws_transit.cidr, 10, 10)
+  ha_gw_size   = var.avtx_gw_size
+  subnet             = cidrsubnet(aviatrix_vpc.aws_transit.cidr, 3, 2)
+  ha_subnet          = cidrsubnet(aviatrix_vpc.aws_transit.cidr, 3, 3)
   #insane_mode_az     = var.hpe ? data.aws_subnet.gw_az.availability_zone : null
   #ha_insane_mode_az  = var.avtx_gw_ha ? (var.hpe ? data.aws_subnet.hagw_az.availability_zone : null) : null
   enable_active_mesh = true
@@ -67,7 +67,9 @@ resource "aviatrix_transit_gateway" "transit_gateway_tvpc" {
   enable_transit_firenet        = true
   enable_private_oob            = true
   oob_availability_zone         = "us-east-1a"
+  ha_oob_availability_zone         = "us-east-1b"
   oob_management_subnet         = data.aws_subnet.selected_oob_subnet1.cidr_block
+  ha_oob_management_subnet         = data.aws_subnet.selected_oob_subnet2.cidr_block
 
   depends_on = [aviatrix_aws_tgw_vpc_attachment.transit_vpc_attachment]
 }
